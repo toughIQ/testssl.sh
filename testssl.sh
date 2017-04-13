@@ -4581,7 +4581,7 @@ cipher_pref_check() {
           has_server_protocol "$p" || continue
 
           if [[ $p != ssl3 ]] || "$HAS_SSL3"; then
-               # with the supplied binaries SNI works also for SSLv3
+               # with the supplied binaries SNI "works" also for SSLv3. albeit this is not what it should be
                [[ "$p" =~ ssl ]] && sni="" || sni=$SNI
 
                if [[ $p == tls1_2 ]] && ! "$SERVER_SIZE_LIMIT_BUG"; then
@@ -10609,19 +10609,19 @@ help() {
      --file <fname>                mass testing option: Reads command lines from <fname>, one line per instance.
                                    Comments via # allowed, EOF signals end of <fname>. Implicitly turns on "--warnings batch"
 
-single check as <options>  ("$PROG_NAME  URI" does everything except -E):
-     -e, --each-cipher             checks each local cipher remotely
-     -E, --cipher-per-proto        checks those per protocol
+single check as <options>  ("$PROG_NAME  URI" does everything except -E/-e):
+     -e, --each-cipher             checks each local cipher remotely, ordered by cipher strength (not in default run)
+     -E, --cipher-per-proto        same as above, only per protocol (not in default run)
+     -P, --server-preference       displays the server's picks: protocol+cipher
      -s, --std, --standard         tests certain lists of cipher suites by strength
      -p, --protocols               checks TLS/SSL protocols (including SPDY/HTTP2)
      -y, --spdy, --npn             checks for SPDY/NPN
      -Y, --http2, --alpn           checks for HTTP2/ALPN
      -S, --server-defaults         displays the server's default picks and certificate info
-     -P, --server-preference       displays the server's picks: protocol+cipher
      -x, --single-cipher <pattern> tests matched <pattern> of ciphers
                                    (if <pattern> not a number: word match)
-     -c, --client-simulation       test client simulations, see which client negotiates with cipher and protocol
      -H, --header, --headers       tests HSTS, HPKP, server/app banner, security headers, cookie, reverse proxy, IPv4 address
+     -c, --client-simulation       test client simulations, see which client negotiates with cipher and protocol
 
      -U, --vulnerable              tests all (of the following) vulnerabilities (if applicable)
      -B, --heartbleed              tests for heartbleed vulnerability
@@ -11907,7 +11907,7 @@ initialize_globals() {
 
 # Set default scanning options for the boolean global do_* variables.
 set_scanning_defaults() {
-     do_allciphers=true
+     do_allciphers=false
      do_vulnerabilities=true
      do_beast=true
      do_lucky13=true
@@ -12436,9 +12436,6 @@ lets_roll() {
      $do_pfs && { run_pfs; ret=$(($? + ret)); time_right_align run_pfs; }
 
      fileout_section_header $section_number true && ((section_number++))
-     $do_server_preference && { run_server_preference; ret=$(($? + ret)); time_right_align run_server_preference; }
-
-     fileout_section_header $section_number true && ((section_number++))
      $do_server_defaults && { run_server_defaults; ret=$(($? + ret)); time_right_align run_server_defaults; }
 
      if $do_header; then
@@ -12485,6 +12482,9 @@ lets_roll() {
      fileout_section_header $section_number true && ((section_number++))
      $do_allciphers && { run_allciphers; ret=$(($? + ret)); time_right_align run_allciphers; }
      $do_cipher_per_proto && { run_cipher_per_proto; ret=$(($? + ret)); time_right_align run_cipher_per_proto; }
+
+     fileout_section_header $section_number true && ((section_number++))
+     $do_server_preference && { run_server_preference; ret=$(($? + ret)); time_right_align run_server_preference; }
 
      fileout_section_header $section_number true && ((section_number++))
      $do_client_simulation && { run_client_simulation; ret=$(($? + ret)); time_right_align run_client_simulation; }
