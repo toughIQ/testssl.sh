@@ -1875,37 +1875,41 @@ emphasize_stuff_in_headers(){
           -e "s/X-AspNet-Version/${yellow}X-AspNet-Version${off}/g"
 
      if "$do_html"; then
-          html_out "$(tm_out "$1" | sed -e 's/\&/\&amp;/g' \
-               -e 's/</\&lt;/g' -e 's/>/\&gt;/g' -e 's/"/\&quot;/g' -e "s/'/\&apos;/g" \
-               -e "s/\([0-9]\)/${html_brown}\1${html_off}/g" \
-               -e "s/Debian/${html_yellow}\Debian${html_off}/g" \
-               -e "s/Win32/${html_yellow}\Win32${html_off}/g" \
-               -e "s/Win64/${html_yellow}\Win64${html_off}/g" \
-               -e "s/Ubuntu/${html_yellow}Ubuntu${html_off}/g" \
-               -e "s/ubuntu/${html_yellow}ubuntu${html_off}/g" \
-               -e "s/jessie/${html_yellow}jessie${html_off}/g" \
-               -e "s/squeeze/${html_yellow}squeeze${html_off}/g" \
-               -e "s/wheezy/${html_yellow}wheezy${html_off}/g" \
-               -e "s/lenny/${html_yellow}lenny${html_off}/g" \
-               -e "s/SUSE/${html_yellow}SUSE${html_off}/g" \
-               -e "s/Red Hat Enterprise Linux/${html_yellow}Red Hat Enterprise Linux${html_off}/g" \
-               -e "s/Red Hat/${html_yellow}Red Hat${html_off}/g" \
-               -e "s/CentOS/${html_yellow}CentOS${html_off}/g" \
-               -e "s/Via/${html_yellow}Via${html_off}/g" \
-               -e "s/X-Forwarded/${html_yellow}X-Forwarded${html_off}/g" \
-               -e "s/Liferay-Portal/${html_yellow}Liferay-Portal${html_off}/g" \
-               -e "s/X-Cache-Lookup/${html_yellow}X-Cache-Lookup${html_off}/g" \
-               -e "s/X-Cache/${html_yellow}X-Cache${html_off}/g" \
-               -e "s/X-Squid/${html_yellow}X-Squid${html_off}/g" \
-               -e "s/X-Server/${html_yellow}X-Server${html_off}/g" \
-               -e "s/X-Varnish/${html_yellow}X-Varnish${html_off}/g" \
-               -e "s/X-OWA-Version/${html_yellow}X-OWA-Version${html_off}/g" \
-               -e "s/MicrosoftSharePointTeamServices/${html_yellow}MicrosoftSharePointTeamServices${html_off}/g" \
-               -e "s/X-Application-Context/${html_yellow}X-Application-Context${html_off}/g" \
-               -e "s/X-Version/${html_yellow}X-Version${html_off}/g" \
-               -e "s/X-Powered-By/${html_yellow}X-Powered-By${html_off}/g" \
-               -e "s/X-UA-Compatible/${html_yellow}X-UA-Compatible${html_off}/g" \
-               -e "s/X-AspNet-Version/${html_yellow}X-AspNet-Version${html_off}/g")"
+          if [[ $COLOR -eq 2 ]]; then
+               html_out "$(tm_out "$1" | sed -e 's/\&/\&amp;/g' \
+                    -e 's/</\&lt;/g' -e 's/>/\&gt;/g' -e 's/"/\&quot;/g' -e "s/'/\&apos;/g" \
+                    -e "s/\([0-9]\)/${html_brown}\1${html_off}/g" \
+                    -e "s/Debian/${html_yellow}\Debian${html_off}/g" \
+                    -e "s/Win32/${html_yellow}\Win32${html_off}/g" \
+                    -e "s/Win64/${html_yellow}\Win64${html_off}/g" \
+                    -e "s/Ubuntu/${html_yellow}Ubuntu${html_off}/g" \
+                    -e "s/ubuntu/${html_yellow}ubuntu${html_off}/g" \
+                    -e "s/jessie/${html_yellow}jessie${html_off}/g" \
+                    -e "s/squeeze/${html_yellow}squeeze${html_off}/g" \
+                    -e "s/wheezy/${html_yellow}wheezy${html_off}/g" \
+                    -e "s/lenny/${html_yellow}lenny${html_off}/g" \
+                    -e "s/SUSE/${html_yellow}SUSE${html_off}/g" \
+                    -e "s/Red Hat Enterprise Linux/${html_yellow}Red Hat Enterprise Linux${html_off}/g" \
+                    -e "s/Red Hat/${html_yellow}Red Hat${html_off}/g" \
+                    -e "s/CentOS/${html_yellow}CentOS${html_off}/g" \
+                    -e "s/Via/${html_yellow}Via${html_off}/g" \
+                    -e "s/X-Forwarded/${html_yellow}X-Forwarded${html_off}/g" \
+                    -e "s/Liferay-Portal/${html_yellow}Liferay-Portal${html_off}/g" \
+                    -e "s/X-Cache-Lookup/${html_yellow}X-Cache-Lookup${html_off}/g" \
+                    -e "s/X-Cache/${html_yellow}X-Cache${html_off}/g" \
+                    -e "s/X-Squid/${html_yellow}X-Squid${html_off}/g" \
+                    -e "s/X-Server/${html_yellow}X-Server${html_off}/g" \
+                    -e "s/X-Varnish/${html_yellow}X-Varnish${html_off}/g" \
+                    -e "s/X-OWA-Version/${html_yellow}X-OWA-Version${html_off}/g" \
+                    -e "s/MicrosoftSharePointTeamServices/${html_yellow}MicrosoftSharePointTeamServices${html_off}/g" \
+                    -e "s/X-Application-Context/${html_yellow}X-Application-Context${html_off}/g" \
+                    -e "s/X-Version/${html_yellow}X-Version${html_off}/g" \
+                    -e "s/X-Powered-By/${html_yellow}X-Powered-By${html_off}/g" \
+                    -e "s/X-UA-Compatible/${html_yellow}X-UA-Compatible${html_off}/g" \
+                    -e "s/X-AspNet-Version/${html_yellow}X-AspNet-Version${html_off}/g")"
+          else
+               html_out "$(html_reserved "$1")"
+          fi
           html_out "\n"
      fi
 }
@@ -2467,6 +2471,7 @@ run_cipher_match(){
      local -i nr_ciphers=0 nr_ossl_ciphers=0 nr_nonossl_ciphers=0
      local -i num_bundles mod_check bundle_size bundle end_of_bundle
      local addcmd dhlen has_dh_bits="$HAS_DH_BITS"
+     local available
      local -i sclient_success
      local re='^[0-9A-Fa-f]+$'
      local using_sockets=true
@@ -2630,7 +2635,7 @@ run_cipher_match(){
                     [[ -z "$ciphers_to_test" ]] && break
                     $OPENSSL s_client $addcmd -cipher "${ciphers_to_test:1}" $STARTTLS $BUGS -connect $NODEIP:$PORT $PROXY $SNI >$TMPFILE 2>$ERRFILE </dev/null
                     sclient_connect_successful "$?" "$TMPFILE" || break
-                    cipher=$(awk '/Cipher *:/ { print $3 }' $TMPFILE)
+                    cipher=$(get_cipher $TMPFILE)
                     [[ -z "$cipher" ]] && break
                     for (( i=bundle*bundle_size; i < end_of_bundle; i++ )); do
                          [[ "$cipher" == "${ciph2[i]}" ]] && ciphers_found2[i]=true && break
@@ -2689,7 +2694,7 @@ run_cipher_match(){
                     fi
                     sclient_success=$?
                     [[ $sclient_success -ne 0 ]] && [[ $sclient_success -ne 2 ]] && break
-                    cipher=$(awk '/Cipher *:/ { print $3 }' "$TEMPDIR/$NODEIP.parse_tls_serverhello.txt")
+                    cipher=$(get_cipher "$TEMPDIR/$NODEIP.parse_tls_serverhello.txt")
                     for (( i=bundle*bundle_size; i < end_of_bundle; i++ )); do
                          [[ "$cipher" == "${rfc_ciph2[i]}" ]] && ciphers_found2[i]=true && break
                     done
@@ -2706,16 +2711,21 @@ run_cipher_match(){
           done
 
           for (( i=0; i < nr_ciphers; i++ )); do
+               "${ciphers_found[i]}" || "$SHOW_EACH_C" || continue
                export="${export2[i]}"
                neat_list "${normalized_hexcode[i]}" "${ciph[i]}" "${kx[i]}" "${enc[i]}" "${ciphers_found[i]}"
-               if "${ciphers_found[i]}"; then
-                    pr_cyan "  available"
-                    fileout "cipher_${normalized_hexcode[i]}" "INFO" "$(neat_list "${normalized_hexcode[i]}" "${ciph[i]}" "${kx[i]}" "${enc[i]}") available"
-               else
-                    pr_deemphasize "  not a/v"
-                    fileout "cipher_${normalized_hexcode[i]}" "INFO" "$(neat_list "${normalized_hexcode[i]}" "${ciph[i]}" "${kx[i]}" "${enc[i]}") not a/v"
+               available=""
+               if "$SHOW_EACH_C"; then
+                    if "${ciphers_found[i]}"; then
+                         available="available"
+                         pr_cyan "available"
+                    else
+                         available="not a/v"
+                         pr_deemphasize "not a/v"
+                    fi
                fi
-               outln
+               outln "${sigalg[i]}"
+               fileout "cipher_${normalized_hexcode[i]}" "INFO" "$(neat_list "${normalized_hexcode[i]}" "${ciph[i]}" "${kx[i]}" "${enc[i]}") $available"
           done
           "$using_sockets" && HAS_DH_BITS="$has_dh_bits"
           exit
@@ -2874,7 +2884,7 @@ run_allciphers() {
                     $OPENSSL s_client $addcmd -cipher "${ciphers_to_test:1}" $STARTTLS $BUGS -connect $NODEIP:$PORT $PROXY $SNI >$TMPFILE 2>$ERRFILE </dev/null
                     sclient_connect_successful "$?" "$TMPFILE"
                     if [[ "$?" -eq 0 ]]; then
-                         cipher=$(awk '/Cipher *:/ { print $3 }' $TMPFILE)
+                         cipher=$(get_cipher $TMPFILE)
                          if [[ -n "$cipher" ]]; then
                               success=0
                               for (( i=bundle*bundle_size; i < end_of_bundle; i++ )); do
@@ -2939,7 +2949,7 @@ run_allciphers() {
                     ret=$?
                     if [[ $ret -eq 0 ]] || [[ $ret -eq 2 ]]; then
                          success=0
-                         cipher=$(awk '/Cipher *:/ { print $3 }' "$TEMPDIR/$NODEIP.parse_tls_serverhello.txt")
+                         cipher=$(get_cipher "$TEMPDIR/$NODEIP.parse_tls_serverhello.txt")
                          for (( i=bundle*bundle_size; i < end_of_bundle; i++ )); do
                               [[ "$cipher" == "${rfc_ciph2[i]}" ]] && ciphers_found2[i]=true && break
                          done
@@ -3157,7 +3167,7 @@ run_cipher_per_proto() {
                               $OPENSSL s_client -cipher "${ciphers_to_test:1}" $proto $STARTTLS $BUGS -connect $NODEIP:$PORT $PROXY $sni >$TMPFILE 2>$ERRFILE </dev/null
                               sclient_connect_successful "$?" "$TMPFILE"
                               if [[ "$?" -eq 0 ]]; then
-                                   cipher=$(awk '/Cipher *:/ { print $3 }' $TMPFILE)
+                                   cipher=$(get_cipher $TMPFILE)
                                    if [[ -n "$cipher" ]]; then
                                         success=0
                                         for (( i=bundle*bundle_size; i < end_of_bundle; i++ )); do
@@ -3221,7 +3231,7 @@ run_cipher_per_proto() {
                               fi
                               if [[ $? -eq 0 ]]; then
                                    success=0
-                                   cipher=$(awk '/Cipher *:/ { print $3 }' "$TEMPDIR/$NODEIP.parse_tls_serverhello.txt")
+                                   cipher=$(get_cipher "$TEMPDIR/$NODEIP.parse_tls_serverhello.txt")
                                    for (( i=bundle*bundle_size; i < end_of_bundle; i++ )); do
                                         [[ "$cipher" == "${rfc_ciph2[i]}" ]] && ciphers_found2[i]=true && break
                                    done
@@ -4421,7 +4431,7 @@ run_server_preference() {
                               if [[ $? -eq 0 ]]; then
                                    proto[i]="SSLv3"
                                    cipher[i]=""
-                                   cipher1=$(awk '/Cipher *:/ { print $3 }' "$TEMPDIR/$NODEIP.parse_tls_serverhello.txt")
+                                   cipher1=$(get_cipher "$TEMPDIR/$NODEIP.parse_tls_serverhello.txt")
                                    if [[ "$DISPLAY_CIPHERNAMES" =~ openssl ]] && [[ $TLS_NR_CIPHERS -ne 0 ]]; then
                                         cipher[i]="$(rfc2openssl "$cipher1")"
                                         [[ -z "${cipher[i]}" ]] && cipher[i]="$cipher1"
@@ -4493,7 +4503,7 @@ check_tls12_pref() {
      while true; do
           $OPENSSL s_client $STARTTLS -tls1_2 $BUGS -cipher "ALL$tested_cipher:$batchremoved" -connect $NODEIP:$PORT $PROXY $SNI </dev/null 2>>$ERRFILE >$TMPFILE
           if sclient_connect_successful $? $TMPFILE ; then
-               cipher=$(awk '/Cipher.*:/ { print $3 }' $TMPFILE)
+               cipher=$(get_cipher $TMPFILE)
                order+=" $cipher"
                tested_cipher="$tested_cipher:-$cipher"
                nr_ciphers_found_r1+=1
@@ -4510,7 +4520,7 @@ check_tls12_pref() {
           $OPENSSL s_client $STARTTLS -tls1_2 $BUGS -cipher "$batchremoved" -connect $NODEIP:$PORT $PROXY $SNI </dev/null 2>>$ERRFILE >$TMPFILE
           if sclient_connect_successful $? $TMPFILE ; then
                batchremoved_success=true               # signals that we have some of those ciphers and need to put everything together later on
-               cipher=$(awk '/Cipher.*:/ { print $3 }' $TMPFILE)
+               cipher=$(get_cipher $TMPFILE)
                order+=" $cipher"
                batchremoved="$batchremoved:-$cipher"
                nr_ciphers_found_r1+=1
@@ -4531,7 +4541,7 @@ check_tls12_pref() {
           while true; do
                $OPENSSL s_client $STARTTLS -tls1_2 $BUGS -cipher "$combined_ciphers$tested_cipher" -connect $NODEIP:$PORT $PROXY $SNI </dev/null 2>>$ERRFILE >$TMPFILE
                if sclient_connect_successful $? $TMPFILE ; then
-                    cipher=$(awk '/Cipher.*:/ { print $3 }' $TMPFILE)
+                    cipher=$(get_cipher $TMPFILE)
                     order+=" $cipher"
                     tested_cipher="$tested_cipher:-$cipher"
                     nr_ciphers_found_r2+=1
@@ -4602,7 +4612,7 @@ cipher_pref_check() {
                     while true; do
                          $OPENSSL s_client $STARTTLS -"$p" $BUGS -cipher "ALL:COMPLEMENTOFALL$tested_cipher" -connect $NODEIP:$PORT $PROXY $sni </dev/null 2>>$ERRFILE >$TMPFILE
                          sclient_connect_successful $? $TMPFILE || break
-                         cipher=$(awk '/Cipher *:/ { print $3 }' $TMPFILE)
+                         cipher=$(get_cipher $TMPFILE)
                          [[ -z "$cipher" ]] && break
                          order+="$cipher "
                          tested_cipher+=":-"$cipher
@@ -4666,7 +4676,7 @@ cipher_pref_check() {
                     [[ -z "$ciphers_to_test" ]] && break
                     tls_sockets "$proto_hex" "${ciphers_to_test:2}, 00,ff" "ephemeralkey"
                     [[ $? -ne 0 ]] && break
-                    cipher=$(awk '/Cipher *:/ { print $3 }' "$TEMPDIR/$NODEIP.parse_tls_serverhello.txt")
+                    cipher=$(get_cipher "$TEMPDIR/$NODEIP.parse_tls_serverhello.txt")
                     for (( i=bundle*bundle_size; i < end_of_bundle; i++ )); do
                          [[ "$cipher" == "${rfc_ciph[i]}" ]] && ciphers_found2[i]=true && break
                     done
@@ -4717,14 +4727,14 @@ cipher_pref_check() {
                     [[ -z "$ciphers_to_test" ]] && break
                     tls_sockets "$proto_hex" "${ciphers_to_test:2}, 00,ff" "ephemeralkey"
                     [[ $? -ne 0 ]] && break
-                    cipher=$(awk '/Cipher *:/ { print $3 }' "$TEMPDIR/$NODEIP.parse_tls_serverhello.txt")
+                    cipher=$(get_cipher "$TEMPDIR/$NODEIP.parse_tls_serverhello.txt")
                     for (( i=0; i < nr_ciphers; i++ )); do
                          [[ "$cipher" == "${rfc_ciph[i]}" ]] && ciphers_found2[i]=true && break
                     done
                     if [[ "$DISPLAY_CIPHERNAMES" =~ openssl ]] && [[ $TLS_NR_CIPHERS -ne 0 ]]; then
                          cipher="$(rfc2openssl "$cipher")"
                          # If there is no OpenSSL name for the cipher, then use the RFC name
-                         [[ -z "$cipher" ]] && cipher=$(awk '/Cipher *:/ { print $3 }' "$TEMPDIR/$NODEIP.parse_tls_serverhello.txt")
+                         [[ -z "$cipher" ]] && cipher=$(get_cipher "$TEMPDIR/$NODEIP.parse_tls_serverhello.txt")
                     fi
                     order+="$cipher "
                done
@@ -6255,7 +6265,7 @@ run_pfs() {
                [[ -z "$ciphers_to_test" ]] && break
                $OPENSSL s_client -cipher "${ciphers_to_test:1}" $STARTTLS $BUGS -connect $NODEIP:$PORT $PROXY $SNI &>$TMPFILE </dev/null
                sclient_connect_successful $? $TMPFILE || break
-               pfs_cipher=$(awk '/Cipher *:/ { print $3 }' $TMPFILE)
+               pfs_cipher=$(get_cipher $TMPFILE)
                [[ -z "$pfs_cipher" ]] && break
                for (( i=0; i < nr_supported_ciphers; i++ )); do
                     [[ "$pfs_cipher" == "${ciph[i]}" ]] && break
@@ -6282,7 +6292,7 @@ run_pfs() {
                     fi
                     sclient_success=$?
                     [[ $sclient_success -ne 0 ]] && [[ $sclient_success -ne 2 ]] && break
-                    pfs_cipher=$(awk '/Cipher *:/ { print $3 }' "$TEMPDIR/$NODEIP.parse_tls_serverhello.txt")
+                    pfs_cipher=$(get_cipher "$TEMPDIR/$NODEIP.parse_tls_serverhello.txt")
                     for (( i=0; i < nr_supported_ciphers; i++ )); do
                          [[ "$pfs_cipher" == "${rfc_ciph[i]}" ]] && break
                     done
@@ -8182,7 +8192,7 @@ sslv2_sockets() {
      debugme tmln_out "reading server hello... "
      if [[ "$DEBUG" -ge 4 ]]; then
           hexdump -C "$SOCK_REPLY_FILE" | head -6
-          outln
+          tmln_out
      fi
 
      parse_sslv2_serverhello "$SOCK_REPLY_FILE" "$parse_complete"
@@ -8729,7 +8739,7 @@ run_heartbleed(){
                     else
                          out "likely "
                          pr_svrty_critical "VULNERABLE (NOT ok)"
-                         [[ $DEBUG -lt 3 ]] && out ", use debug >=3 to confirm"
+                         [[ $DEBUG -lt 3 ]] && tm_out ", use debug >=3 to confirm"
                          fileout "heartbleed" "CRITICAL" "Heartbleed: VULNERABLE $cve" "$cwe" "$hint"
                          ret=1
                     fi
@@ -9879,7 +9889,7 @@ run_beast(){
                [[ -z "$ciphers_to_test" ]] && break
                $OPENSSL s_client -cipher "${ciphers_to_test:1}" -"$proto" $STARTTLS $BUGS -connect $NODEIP:$PORT $PROXY $sni >$TMPFILE 2>>$ERRFILE </dev/null
                sclient_connect_successful $? $TMPFILE || break
-               cbc_cipher=$(awk '/Cipher *:/ { print $3 }' $TMPFILE)
+               cbc_cipher=$(get_cipher $TMPFILE)
                [[ -z "$cbc_cipher" ]] && break
                for (( i=0; i < nr_ciphers; i++ )); do
                     [[ "$cbc_cipher" == "${ciph[i]}" ]] && break
@@ -9911,7 +9921,7 @@ run_beast(){
                          tls_sockets "$proto_hex" "${ciphers_to_test:2}, 00,ff" "ephemeralkey"
                     fi
                     [[ $? -ne 0 ]] && break
-                    cbc_cipher=$(awk '/Cipher *:/ { print $3 }' "$TEMPDIR/$NODEIP.parse_tls_serverhello.txt")
+                    cbc_cipher=$(get_cipher "$TEMPDIR/$NODEIP.parse_tls_serverhello.txt")
                     for (( i=0; i < nr_ciphers; i++ )); do
                          [[ "$cbc_cipher" == "${rfc_ciph[i]}" ]] && break
                     done
@@ -10205,7 +10215,7 @@ run_rc4() {
                $OPENSSL s_client $addcmd -cipher "${ciphers_to_test:1}" $STARTTLS $BUGS -connect $NODEIP:$PORT $PROXY $SNI >$TMPFILE 2>$ERRFILE </dev/null
                sclient_connect_successful "$?" "$TMPFILE"
                if [[ "$?" -eq 0 ]]; then
-                    cipher=$(awk '/Cipher *:/ { print $3 }' $TMPFILE)
+                    cipher=$(get_cipher $TMPFILE)
                     if [[ -n "$cipher" ]]; then
                          success=0
                          rc4_offered=1
@@ -10254,7 +10264,7 @@ run_rc4() {
                if [[ $ret -eq 0 ]] || [[ $ret -eq 2 ]]; then
                     success=0
                     rc4_offered=1
-                    cipher=$(awk '/Cipher *:/ { print $3 }' "$TEMPDIR/$NODEIP.parse_tls_serverhello.txt")
+                    cipher=$(get_cipher "$TEMPDIR/$NODEIP.parse_tls_serverhello.txt")
                     for (( i=0; i < nr_nonossl_ciphers; i++ )); do
                          [[ "$cipher" == "${rfc_ciph2[i]}" ]] && ciphers_found2[i]=true && break
                     done
